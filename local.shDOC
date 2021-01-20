@@ -1,0 +1,144 @@
+#!/bin/sh
+
+# local configuration options
+
+# Note: modify at your own risk!  If you do/use anything in this
+
+# script that is not part of a stable API (relying on files to be in
+
+# specific places, specific tools, specific output, etc) there is a
+
+# possibility you will end up with a broken system after patching or
+
+# upgrading.  Changes are not supported unless under direction of
+
+# VMware support.
+
+# Note: This script will not be run when UEFI secure boot is enabled.
+
+#
+
+# Note: STARTECH USB 3.0 USB-1 vusb0
+
+# -------------------------------------------------
+
+vusb0_status=$(esxcli network nic get -n vusb0 | grep 'Link Status' | awk '{print $NF}')
+
+count=0
+
+while [[ $count -lt 20 && "${vusb0_status}" != "Up" ]] ]
+
+do
+
+    sleep 10
+
+    count=$(( $count + 1 ))
+
+    vusb0_status=$(esxcli network nic get -n vusb0 | grep 'Link Status' | awk '{print $NF}')
+
+done
+
+if [ "${vusb0_status}" = "Up" ]; then
+
+    esxcfg-vswitch -L vusb0 ORANGE
+
+    esxcfg-vswitch -M vusb0 -p "Management Network" ORANGE
+
+    esxcfg-vswitch -M vusb0 -p "VM Network" ORANGE
+
+#
+
+# Note: create portgroups
+
+# -------------------------------------------------
+
+esxcli network vswitch standard portgroup add --portgroup-name=ORANGE-portgrup --vswitch-name=ORANGE
+
+esxcli network vswitch standard portgroup add --portgroup-name=BLUE-portgrup --vswitch-name=BLUE
+
+esxcli network vswitch standard portgroup add --portgroup-name=RED-portgrup --vswitch-name=RED
+
+esxcli network vswitch standard portgroup add --portgroup-name=GREEN-portgroup --vswitch-name=vSwitch0
+
+#
+
+# Note: create vSwitches
+
+# -------------------------------------------------
+
+esxcli network vswitch standard uplink add --uplink-name=vusb0 --vswitch-name=ORANGE
+
+esxcli network vswitch standard uplink add --uplink-name=vusb1 --vswitch-name=BLUE
+
+esxcli network vswitch standard uplink add --uplink-name=vmnic32 --vswitch-name=RED
+
+fi
+
+#
+
+# Note: STARTECH USB 3.0 USB-2 vusb1
+
+# -------------------------------------------------
+
+vusb1_status=$(esxcli network nic get -n vusb1 | grep 'Link Status' | awk '{print $NF}')
+
+count=0
+
+while [[ $count -lt 20 && "${vusb1_status}" != "Up" ]] ]
+
+do
+
+    sleep 10
+
+    count=$(( $count + 1 ))
+
+    vusb1_status=$(esxcli network nic get -n vusb1 | grep 'Link Status' | awk '{print $NF}')
+
+done
+
+if [ "${vusb1_status}" = "Up" ]; then
+
+    esxcfg-vswitch -L vusb1 BLUE
+
+    esxcfg-vswitch -M vusb1 -p "Management Network" BLUE
+
+    esxcfg-vswitch -M vusb1 -p "VM Network" BLUE
+
+fi
+
+#
+
+# Note: GIGALAN GLAABIT USB 3.0 USB-3 vmnic32
+
+# -------------------------------------------------
+
+vmnic32_status=$(esxcli network nic get -n vmnic32 | grep 'Link Status' | awk '{print $NF}')
+
+count=0
+
+while [[ $count -lt 20 && "${vmnic32_status}" != "Up" ]] ]
+
+do
+
+    sleep 10
+
+    count=$(( $count + 1 ))
+
+    vmnic32_status=$(esxcli network nic get -n vmnic32 | grep 'Link Status' | awk '{print $NF}')
+
+done
+
+if [ "${vmnic32_status}" = "Up" ]; then
+
+    esxcfg-vswitch -L vmnic32 RED
+    ####HELP  -M|--add-pg-uplink=uplink   Add an uplink to the list of uplinks for a portgroup
+
+
+
+    esxcfg-vswitch -M vmnic32 -p "Management Network" RED
+
+    esxcfg-vswitch -M vmnic32 -p "VM Network" RED
+
+fi
+
+exit 0
