@@ -7,7 +7,7 @@ $newProfile = New-EsxImageProfile -CloneProfile $baseProfile -name $($baseProfil
 Remove-EsxSoftwarePackage -ImageProfile $newProfile -SoftwarePackage "ne1000"
 Add-EsxSoftwarePackage -ImageProfile $newProfile -SoftwarePackage "ne1000 0.8.4-10vmw.700.1.0.15843807"
 
- Add-EsxSoftwareDepot .\ESXi700-VMKUSB-NIC-FLING-39035884-component-16770668.zip    ## example local drive zip This is to the directory of whatever ZIP of drivers you need to add
+Add-EsxSoftwareDepot .\ESXi700-VMKUSB-NIC-FLING-39035884-component-16770668.zip    ## example local drive zip This is to the directory of whatever ZIP of drivers you need to add
 Add-EsxSoftwareDepot .\ESXi701-VMKUSB-NIC-FLING-40599856-component-17078334.zip   ###This is to the directory of whatever ZIP of drivers you need to add
 Export-ESXImageProfile -ImageProfile $newProfile -ExportToBundle -filepath "$($baseProfile.Replace("standard", "nuc")).zip"
 Export-ESXImageProfile -ImageProfile $newProfile -ExportToIso -filepath "$($baseProfile.Replace("standard", "nuc")).iso"
