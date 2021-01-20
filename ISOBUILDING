@@ -1,6 +1,7 @@
 Install-Module -Name VMware.PowerCLI -Scope CurrentUser ### From powershell Get ready 
 
-Export-ESXImageProfile -ImageProfile $newProfile -ExportToIso -filepath "$($baseProfile.Replace("standard", "nuc")).iso"
+$baseProfile = "ESXi-7.0.1-16850804-standard"   # See https://www.virten.net/vmware/vmware-esxi-image-profiles/ for available Image Profiles
+
 Add-EsxSoftwareDepot https://hostupdate.vmware.com/software/VUM/PRODUCTION/main/vmw-depot-index.xml
 $newProfile = New-EsxImageProfile -CloneProfile $baseProfile -name $($baseProfile.Replace("standard", "nuc")) -Vendor "Stephen Smith"
 Remove-EsxSoftwarePackage -ImageProfile $newProfile -SoftwarePackage "ne1000"
