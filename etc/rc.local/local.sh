@@ -25,6 +25,15 @@ esxcli network vswitch standard portgroup add --portgroup-name=iscsi --vswitch-n
 
 esxcli network vswitch standard uplink add --uplink-name=vusb0 --vswitch-name=iSCSI
 
+sleep 5
+
+esxcli software set --enabled=true
+esxcli iscsi networkportal add --nic vmk1 --adapter vmhba64
+esxcli iscsi adapter discovery sendtarget add -a 172.16.50.5:3260 -A vmhba64
+
+sleep 20  
+esxcli storage core adapter rescan --adapter vmhba64   
+
 fi
 
 
