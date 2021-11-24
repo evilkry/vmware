@@ -1,0 +1,5 @@
+vusb0 00:0a:cd:3a:37:ac
+vusb1 00:0a:cd:3a:37:ab
+vusb2 00:24:9b:30:6c:51
+
+esxcli system module parameters set -p "vusb0_mac=00:0a:cd:3a:37:ac vusb1_mac=00:0a:cd:3a:37:ab vusb2_mac=00:24:9b:30:6c:51" -m vmkusb_nic_fling
