@@ -1,3 +1,8 @@
+
+#!/bin/sh ++group=host/vim/vmvisor/boot
+# EDITED 01/20/2021
+# local configuration options
+
 vusb0_status=$(esxcli network nic get -n vusb0 | grep 'Link Status' | awk '{prin                                                t $NF}')
 count=0
 while [[ $count -lt 20 && "${vusb0_status}" != "Up" ]]
