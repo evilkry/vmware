@@ -3,3 +3,12 @@ vusb1 00:0a:cd:3a:37:ab
 vusb2 00:24:9b:30:6c:51
 
 esxcli system module parameters set -p "vusb0_mac=00:0a:cd:3a:37:ac vusb1_mac=00:0a:cd:3a:37:ab vusb2_mac=00:24:9b:30:6c:51" -m vmkusb_nic_fling
+
+
+
+esxcli system module parameters set -p "vusb0_mac=00:0a:cd:3a:38:99 vusb1_mac=00:0a:cd:3a:38:9a vusb2_mac=00:24:9b:30:6c:55" -m vmkusb_nic_fling     ESX03
+
+esxcli system module parameters set -p "vusb0_mac=00:0a:cd:3a:38:23 vusb1_mac=00:0a:cd:3a:38:24 vusb2_mac=00:24:9b:4b:83:8f" -m vmkusb_nic_fling      ESX01
+
+esxcli system module parameters set -p "vusb0_mac=00:24:9b:4b:83:92 vusb1_mac=00:24:9b:30:6c:5a" -m vmkusb_nic_fling     ESX04
+
